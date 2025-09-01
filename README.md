@@ -31,7 +31,7 @@ The purpose of this API is to provide a set of endpoints for performing basic CR
 ---
 
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
 Pedro Novaes
 
