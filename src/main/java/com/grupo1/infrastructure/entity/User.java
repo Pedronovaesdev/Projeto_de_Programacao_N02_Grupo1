@@ -1,4 +1,4 @@
-package com.pedro.novaes.apijavacadastrouser.infrastructure.entity;
+package com.grupo1.infrastructure.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

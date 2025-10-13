@@ -1,4 +1,4 @@
-package com.pedro.novaes.apijavacadastrouser;
+package com.grupo1;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

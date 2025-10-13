@@ -1,4 +1,4 @@
-package com.pedro.novaes.apijavacadastrouser.dto;
+package com.grupo1.dto;
 
 import lombok.Getter;
 import lombok.Setter;
