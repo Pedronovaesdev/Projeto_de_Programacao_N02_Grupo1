@@ -47,7 +47,7 @@ public class UserController {
             ,@RequestBody UserRequestDTO userDto){
         User newUser = new User();
         newUser.setId(id);
-        newUser.setNome(userDto.getNome());
+        newUser.setName(userDto.getName());
         newUser.setEmail(userDto.getEmail());
         userService.updateUserById(id, newUser);
         return ResponseEntity.ok().build();

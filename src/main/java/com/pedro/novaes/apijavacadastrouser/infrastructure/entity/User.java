@@ -27,7 +27,7 @@ public class User implements Serializable {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "senha", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password ;
 
     @Column(name = "telefone", nullable = false)
@@ -59,8 +59,9 @@ public class User implements Serializable {
     @Column(name = "registroProf", nullable = false)
     private String teacherRegistration;
 
-    @Column(name = "nivelAcesso", nullable = false)
-    private String accessLevel;
+    @ManyToOne
+    @JoinColumn(name = "paper_id",nullable = false)
+    private Paper paper;
 
 
 }
