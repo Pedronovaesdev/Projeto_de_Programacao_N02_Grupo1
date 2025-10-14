@@ -28,42 +28,39 @@ public class User implements Serializable {
     private String email;
 
     @Column(name = "senha", nullable = false)
-    private String senha;
+    private String password ;
 
     @Column(name = "telefone", nullable = false)
-    private String telefone;
-
-    @Column(name = "dataCadastro", nullable = false)
-    private LocalDate dataCadastro;
+    private String phone;
 
     @Column(name = "dataNascimento", nullable = false)
-    private LocalDate dataNascimento;
+    private LocalDate birthDate;
 
     @CreationTimestamp
     @Column(name = "dataCriacao", nullable = false)
-    private LocalDate dataCriacao;
+    private LocalDate registrionDate;
 
     @UpdateTimestamp
     @Column(name = "ultimoAcesso")
-    private LocalDateTime ultimoAcesso;
+    private LocalDateTime lastAccess;
 
     @Column(name = "ValorConta", nullable = false)
-    private Double valorConta;
+    private Double accountValue;
 
     @Column(name = "nome", nullable = false)
-    private String nome;
+    private String name;
 
     @Column(name = "matricula", nullable = false)
-    private String matricula;
+    private String registration;
 
     @Column(name = "especialidade", nullable = false)
-    private String especialidade;
+    private String specialty;
 
     @Column(name = "registroProf", nullable = false)
-    private String registroProf;
+    private String teacherRegistration;
 
     @Column(name = "nivelAcesso", nullable = false)
-    private String nivelAcesso;
+    private String accessLevel;
 
 
 }
