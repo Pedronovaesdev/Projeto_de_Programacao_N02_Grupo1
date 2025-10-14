@@ -2,9 +2,13 @@ package com.pedro.novaes.apijavacadastrouser.infrastructure.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.cglib.core.Local;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -30,16 +34,18 @@ public class User implements Serializable {
     private String telefone;
 
     @Column(name = "dataCadastro", nullable = false)
-    private Date dataCadastro;
+    private LocalDate dataCadastro;
 
     @Column(name = "dataNascimento", nullable = false)
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
+    @CreationTimestamp
     @Column(name = "dataCriacao", nullable = false)
-    private Date dataCriacao;
+    private LocalDate dataCriacao;
 
-    @Column(name = "ultimoAcesso", nullable = false)
-    private Date ultimoAcesso;
+    @UpdateTimestamp
+    @Column(name = "ultimoAcesso")
+    private LocalDateTime ultimoAcesso;
 
     @Column(name = "ValorConta", nullable = false)
     private Double valorConta;

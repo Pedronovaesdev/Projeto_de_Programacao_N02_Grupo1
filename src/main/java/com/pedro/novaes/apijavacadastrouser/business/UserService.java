@@ -37,8 +37,8 @@ public class UserService {
         User userUpdate = User.builder()
                 .email(user.getEmail() != null ?
                         user.getEmail() : userEntity.getEmail())
-                .name(user.getName() != null ?
-                        user.getName() : userEntity.getName())
+                .nome(user.getNome() != null ?
+                        user.getNome() : userEntity.getNome())
                 .id(userEntity.getId())
                 .build();
         userRepository.saveAndFlush(userUpdate);
