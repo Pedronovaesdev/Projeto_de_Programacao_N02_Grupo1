@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/user ")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -21,6 +21,10 @@ public class UserController {
         User newUser = new User();
         newUser.setName(userDto.getName());
         newUser.setEmail(userDto.getEmail());
+        newUser.setPassword(userDto.getPassword());
+        newUser.setPhone(userDto.getPhone());
+        newUser.setSpecialty(userDto.getSpecialty());
+        newUser.setBirthDate(userDto.getBirthDate());
         userService.saveUser(newUser);
 
         return ResponseEntity.ok().build();
@@ -47,9 +51,12 @@ public class UserController {
             ,@RequestBody UserRequestDTO userDto){
         User newUser = new User();
         newUser.setId(id);
-        newUser.setNome(userDto.getNome());
+        newUser.setName(userDto.getName());
         newUser.setEmail(userDto.getEmail());
-        userService.updateUserById(id, newUser);
+        newUser.setPassword(userDto.getPassword());
+        newUser.setPhone(userDto.getPhone());
+        newUser.setSpecialty(userDto.getSpecialty());
+        newUser.setBirthDate(userDto.getBirthDate());
         return ResponseEntity.ok().build();
     }
 }

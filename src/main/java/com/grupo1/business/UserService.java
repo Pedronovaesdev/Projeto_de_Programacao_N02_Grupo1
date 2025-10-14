@@ -37,8 +37,16 @@ public class UserService {
         User userUpdate = User.builder()
                 .email(user.getEmail() != null ?
                         user.getEmail() : userEntity.getEmail())
-                .nome(user.getNome() != null ?
-                        user.getNome() : userEntity.getNome())
+                .name(user.getName() != null ?
+                        user.getName() : userEntity.getName())
+                .phone(user.getPhone() != null ?
+                        user.getPhone() : userEntity.getPhone())
+                .password(user.getPassword() != null ?
+                        user.getPassword() : userEntity.getPassword())
+                .specialty(user.getSpecialty() != null ?
+                        user.getSpecialty() : userEntity.getSpecialty())
+                .birthDate(user.getBirthDate() != null ?
+                        user.getBirthDate() : userEntity.getBirthDate())
                 .id(userEntity.getId())
                 .build();
         userRepository.saveAndFlush(userUpdate);
