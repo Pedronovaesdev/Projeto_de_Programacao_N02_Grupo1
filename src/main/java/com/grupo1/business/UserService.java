@@ -1,7 +1,7 @@
-package com.pedro.novaes.apijavacadastrouser.business;
+package com.grupo1.business;
 
-import com.pedro.novaes.apijavacadastrouser.infrastructure.entity.User;
-import com.pedro.novaes.apijavacadastrouser.infrastructure.repository.UserRepository;
+import com.grupo1.infrastructure.entity.User;
+import com.grupo1.infrastructure.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

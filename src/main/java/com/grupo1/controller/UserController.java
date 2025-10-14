@@ -1,8 +1,8 @@
-package com.pedro.novaes.apijavacadastrouser.controller;
+package com.grupo1.controller;
 
-import com.pedro.novaes.apijavacadastrouser.business.UserService;
-import com.pedro.novaes.apijavacadastrouser.dto.UserRequestDTO;
-import com.pedro.novaes.apijavacadastrouser.infrastructure.entity.User;
+import com.grupo1.business.UserService;
+import com.grupo1.dto.UserRequestDTO;
+import com.grupo1.infrastructure.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

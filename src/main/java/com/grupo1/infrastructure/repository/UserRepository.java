@@ -1,6 +1,6 @@
-package com.pedro.novaes.apijavacadastrouser.infrastructure.repository;
+package com.grupo1.infrastructure.repository;
 
-import com.pedro.novaes.apijavacadastrouser.infrastructure.entity.User;
+import com.grupo1.infrastructure.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
