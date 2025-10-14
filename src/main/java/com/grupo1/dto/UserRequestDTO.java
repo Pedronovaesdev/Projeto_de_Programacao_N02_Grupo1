@@ -8,10 +8,10 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class UserRequestDTO {
-    private String nome;
+    private String name;
     private String email;
-    private String senha;
-    private String telefone;
-    private String especialidade;
-    private LocalDate dataNascimento;
+    private String password;
+    private String phone;
+    private String specialty;
+    private LocalDate birthDate;
 }
