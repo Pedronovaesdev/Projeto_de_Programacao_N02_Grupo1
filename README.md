@@ -28,6 +28,22 @@ The application is structured following the layered architecture pattern:
 - Repository Layer: Manages data persistence and database operations
 - Model Layer: Defines the User entity and data structures
 
+### 👨‍💻 Frontend Repository
+<table>
+  <tr>
+    <td valign="middle">
+      <a href="https://github.com/EricMariano/projeto_de_programacao_n02_grupo1_front.git" target="_blank">
+      <img src="https://www.svgrepo.com/show/484158/web-page-browser-window.svg" height="50" width="50" alt="Web page icon">
+      </a>
+      </td>
+      <td valign="middle">
+      <a href="https://github.com/EricMariano/projeto_de_programacao_n02_grupo1_front.git" target="_blank">
+      Check out the application frontend
+      </a>
+    </td>
+  </tr>
+</table>
+
 ### 💻 Technologies used
 
 * **Language:** Java 17
