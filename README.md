@@ -17,7 +17,8 @@ This registration module provides user management functionality including regist
 - [x] Updating existing user data
 - [x] Deleting users
 - [x] Data persistence in repository
-- [ ] Login/Registration interface development (FRONT)
+- [x] Login/Registration interface development (FRONT)
+- [ ] Login/Registration fetch (FRONT)
 - [ ] Comprehensive testing
 
 ### ⚙️ Architecture
@@ -37,7 +38,7 @@ The application is structured following the layered architecture pattern:
       </a>
       </td>
       <td valign="middle">
-      <a href="https://github.com/EricMariano/projeto_de_programacao_n02_grupo1_front.git" target="_blank">
+      <a href="https://github.com/EricMariano/Projeto_de_Programacao_N02_Grupo1_Front.git" target="_blank">
       Check out the application frontend
       </a>
     </td>
