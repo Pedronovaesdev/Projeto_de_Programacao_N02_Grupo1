@@ -5,6 +5,7 @@ import com.grupo1.infrastructure.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -14,22 +15,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void saveUser(User user){
-        userRepository.saveAndFlush(user);
-    }
+    public void saveUser(User user) {
 
-    public User findByUserEmail(String email){
-        return userRepository.findByEmail(email).orElseThrow(
-                () -> new RuntimeException("Not Email")
-        );
-    }
+        Optional<User> Email = userRepository.findByEmail(user.getEmail());
 
-    public void deleteByEmail(String email){
-        userRepository.deleteByEmail(email);
-    }
+        if (Email.isPresent()) {
+            if (!Email.get().getId().equals(user.getId())) {
+                throw new RuntimeException("Erro: O email informado já está em uso por outro usuário.");
+            }
+        }
 
-    public List<User> findByAll(){
-        return userRepository.findAll();
+        userRepository.save(user);
     }
 
     public void updateUserById(Integer id, User user){
