@@ -46,6 +46,77 @@ The application is structured following the layered architecture pattern:
   </tr>
 </table>
 
+### 🚀 How to Run the Project
+
+There are two main ways to run this application: using Docker (recommended) or locally.
+
+#### 1. Using Docker (Recommended)
+
+This is the simplest method, as the `docker-compose.yml` will handle the configuration of both the PostgreSQL database and the API.
+
+**Prerequisites:**
+* Docker
+* Docker Compose
+
+**Steps:**
+
+1.  Clone this repository:
+    ```bash
+    git clone https://github.com/Pedronovaesdev/Projeto_de_Programacao_N02_Grupo1
+    ```
+
+2.  Navigate to the project root:
+    ```bash
+    cd Projeto_de_Programacao_N02_Grupo1
+    ```
+
+3.  Bring up the containers using Docker Compose:
+    ```bash
+    docker-compose up -d
+    ```
+    * This will build the API image and start a container for the application (`spring_api`) and one for the database (`postgres_db`).
+
+4.  The application will be available at `http://localhost:8080`.
+
+#### 2. Running Locally (Development)
+
+This method requires you to set up the environment (Java and PostgreSQL) manually.
+
+**Prerequisites:**
+* Java JDK 21 (As per `build.gradle` and `Dockerfile`).
+* A running PostgreSQL 14 (or compatible) server.
+
+**Steps:**
+
+1.  Clone the repository and navigate to the project root (see steps 1 and 2 above).
+
+2.  Configure your local PostgreSQL database to have:
+    * Database: `user_db`
+    * User: `admin`
+    * Password: `admin`
+
+3.  Create an `application.properties` or `application.yml` file in `src/main/resources/`. (This file is ignored by `.gitignore`). Add the connection settings (assuming the database is running on `localhost:5432`):
+
+    *Example (`application.properties`):*
+    ```properties
+    spring.datasource.url=jdbc:postgresql://localhost:5432/user_db
+    spring.datasource.username=admin
+    spring.datasource.password=admin
+    spring.jpa.hibernate.ddl-auto=update
+    ```
+
+4.  Run the application using the Gradle Wrapper (which uses Spring Boot):
+
+    *On Linux/macOS:*
+    ```bash
+    ./gradlew bootRun
+    ```
+    *On Windows:*
+    ```bash
+    gradlew.bat bootRun
+    ```
+5.  The application will be available at `http://localhost:8080`.
+
 ### 💻 Technologies used
 
 * **Language:** Java 17
