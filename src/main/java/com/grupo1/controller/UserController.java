@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user ")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -25,6 +25,10 @@ public class UserController {
         newUser.setPhone(userDto.getPhone());
         newUser.setSpecialty(userDto.getSpecialty());
         newUser.setBirthDate(userDto.getBirthDate());
+        newUser.setAccessLevel(userDto.getAccessLevel());
+        newUser.setAccountValue(userDto.getAccountValue() != null ? userDto.getAccountValue() : 0.0);
+        newUser.setRegistration(userDto.getRegistration());
+        newUser.setTeacherRegistration(userDto.getTeacherRegistration());
         userService.saveUser(newUser);
 
         return ResponseEntity.ok().build();
@@ -46,17 +50,21 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping
-    public ResponseEntity<Void> updateUser(@PathVariable Integer id
-            ,@RequestBody UserRequestDTO userDto){
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateUser(@PathVariable Integer id,
+                                           @RequestBody UserRequestDTO userDto){
         User newUser = new User();
-        newUser.setId(id);
         newUser.setName(userDto.getName());
         newUser.setEmail(userDto.getEmail());
         newUser.setPassword(userDto.getPassword());
         newUser.setPhone(userDto.getPhone());
         newUser.setSpecialty(userDto.getSpecialty());
         newUser.setBirthDate(userDto.getBirthDate());
+        newUser.setAccessLevel(userDto.getAccessLevel());
+        newUser.setAccountValue(userDto.getAccountValue());
+        newUser.setRegistration(userDto.getRegistration());
+        newUser.setTeacherRegistration(userDto.getTeacherRegistration());
+        userService.updateUserById(id, newUser);
         return ResponseEntity.ok().build();
     }
 }
