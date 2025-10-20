@@ -61,7 +61,7 @@ This is the simplest method, as the `docker-compose.yml` will handle the configu
 
 1.  Clone this repository:
     ```bash
-    git clone [<REPOSITORY_URL>](https://github.com/Pedronovaesdev/Projeto_de_Programacao_N02_Grupo1)
+    git clone https://github.com/Pedronovaesdev/Projeto_de_Programacao_N02_Grupo1
     ```
 
 2.  Navigate to the project root:
