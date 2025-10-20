@@ -66,7 +66,7 @@ This is the simplest method, as the `docker-compose.yml` will handle the configu
 
 2.  Navigate to the project root:
     ```bash
-    cd Projeto_de_Programacao_N02_Grupo1-c8034426adccd89a554fffcf5456d6a8fd379fe8
+    cd Projeto_de_Programacao_N02_Grupo1
     ```
 
 3.  Bring up the containers using Docker Compose:
