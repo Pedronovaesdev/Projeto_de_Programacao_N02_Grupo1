@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.cglib.core.Local;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -53,14 +52,13 @@ public class User implements Serializable {
     @Column(name = "matricula", nullable = false)
     private String registration;
 
-    @Column(name = "especialidade", nullable = false)
+    @Column(name = "especialidade")
     private String specialty;
 
-    @Column(name = "registroProf", nullable = false)
+    @Column(name = "registroProf")
     private String teacherRegistration;
 
-    @Column(name = "nivelAcesso", nullable = false)
-    private String accessLevel;
-
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 }
