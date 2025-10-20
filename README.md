@@ -17,6 +17,7 @@ This registration module provides user management functionality including regist
 - [x] Updating existing user data
 - [x] Deleting users
 - [x] Data persistence in repository
+- [x] CORS config
 - [x] Login/Registration interface development (FRONT)
 - [x] Login/Registration fetch (FRONT)
 - [ ] Comprehensive testing
