@@ -6,7 +6,7 @@ RESTful API developed in Java with Spring Boot to manage user registration, auth
 
 The city of Véridia aims to digitalize and organize the course and training offerings from public and private institutions. This module is responsible for the user registration layer of the platform, including registration of students, instructors, and administrators with validation and authentication features.
 
-This registration module provides user management functionality including registration, authentication, profile updates, and data validation. The application follows REST API development best practices using Spring Boot's layered architecture.
+This registration module provides user management functionality including registration, authentication, profile updates, and data validation. The application follows REST API development best practices using Spring Boot's layered architecture. 
 
 ### ✨ Features
 
