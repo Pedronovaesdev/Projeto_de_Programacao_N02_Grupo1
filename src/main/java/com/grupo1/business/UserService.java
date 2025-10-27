@@ -3,16 +3,33 @@ package com.grupo1.business;
 import com.grupo1.infrastructure.entity.Role;
 import com.grupo1.infrastructure.entity.User;
 import com.grupo1.infrastructure.repository.UserRepository;
+import com.grupo1.business.AdminInstructorStrategy;
+
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final StudentValidationStrategy studentValidationStrategy;
+    private final AdminInstructorStrategy adminInstructorStrategy;
+
+    private Map<Role, UserValidationStrategy> validationStrategies;
+
+    @PostConstruct
+    private void iniciarStrategies(){
+        validationStrategies = Map.of(
+            Role.STUDENT, studentValidationStrategy,
+            Role.INSTRUCTOR, adminInstructorStrategy,
+            Role.ADMIN, adminInstructorStrategy
+        );
+    }
 
     public void saveUser(User user) {
         Optional<User> existingEmail = userRepository.findByEmail(user.getEmail());
@@ -80,19 +97,15 @@ public class UserService {
     }
 
     private void validateUserByRole(User user) {
-        if (user.getRole() == Role.STUDENT) {
-            if (user.getSpecialty() != null && !user.getSpecialty().isEmpty()) {
-                throw new RuntimeException("Aluno (STUDENT) não pode ter especialidade");
-            }
-            if (user.getTeacherRegistration() != null && !user.getTeacherRegistration().isEmpty()) {
-                throw new RuntimeException("Aluno (STUDENT) não pode ter registro profissional");
-            }
-            user.setSpecialty(null);
-            user.setTeacherRegistration(null);
-        } else if (user.getRole() == Role.INSTRUCTOR || user.getRole() == Role.ADMIN) {
-            if (user.getSpecialty() == null || user.getSpecialty().isEmpty()) {
-                throw new RuntimeException("Instrutor/Admin deve ter especialidade");
-            }
+        if(user.getRole() == null){
+            throw new IllegalArgumentException("Usuário deve ter um papel definido");
         }
+        UserValidationStrategy strategy = validationStrategies.get(user.getRole());
+
+        if(strategy == null){
+            throw new IllegalArgumentException("Papel não suportado: " + user.getRole());
+        }
+
+        strategy.validate(user);
     }
 }
