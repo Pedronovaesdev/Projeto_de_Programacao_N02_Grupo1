@@ -36,7 +36,14 @@ public class UserService {
 
         if (existingEmail.isPresent()) {
             if (!existingEmail.get().getId().equals(user.getId())) {
-                throw new RuntimeException("Erro: O email informado já está em uso por outro usuário.");
+                throw new RuntimeException("Erro: email already in use by another user.");
+            }
+        }
+
+        Optional<User> existingCpf = userRepository.findByCpf(user.getCpf());
+        if(existingCpf.isPresent()) {
+            if (!existingCpf.get().getId().equals(user.getId())) {
+                throw new RuntimeException("Erro: cpf already in use by another user.");
             }
         }
 
@@ -53,6 +60,13 @@ public class UserService {
             Optional<User> emailExists = userRepository.findByEmail(user.getEmail());
             if (emailExists.isPresent()) {
                 throw new RuntimeException("Email already in use by another user");
+            }
+        }
+
+        if (user.getCpf() != null && !user.getCpf().equals(userEntity.getCpf())) {
+            Optional<User> cpfExists = userRepository.findByCpf(user.getCpf());
+            if (cpfExists.isPresent()) {
+                throw new RuntimeException("CPF already in use by another user");
             }
         }
 

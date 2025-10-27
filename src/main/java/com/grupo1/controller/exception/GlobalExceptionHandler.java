@@ -32,7 +32,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponseDTO> handleRuntimeException(RuntimeException ex) {
 
-        if (ex.getMessage() != null && ex.getMessage().contains("email informado já está em uso")) {
+        if (ex.getMessage() != null && ex.getMessage().contains("Erro: email already in use by another user.")) {
+            ErrorResponseDTO error = new ErrorResponseDTO(ex.getMessage(), LocalDateTime.now());
+            return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+        }
+
+        if (ex.getMessage() != null && ex.getMessage().contains("Erro: cpf already in use by another user.")) {
             ErrorResponseDTO error = new ErrorResponseDTO(ex.getMessage(), LocalDateTime.now());
             return new ResponseEntity<>(error, HttpStatus.CONFLICT);
         }

@@ -49,6 +49,9 @@ public class User implements Serializable {
     @Column(name = "nome", nullable = false)
     private String name;
 
+    @Column(name = "cpf", nullable = false)
+    private String cpf;
+
     @Column(name = "matricula", nullable = false)
     private String registration;
 
