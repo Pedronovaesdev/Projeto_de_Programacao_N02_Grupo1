@@ -79,7 +79,6 @@ public class UserService {
                 .specialty(user.getSpecialty() != null ? user.getSpecialty() : userEntity.getSpecialty())
                 .birthDate(user.getBirthDate() != null ? user.getBirthDate() : userEntity.getBirthDate())
                 .role(user.getRole() != null ? user.getRole() : userEntity.getRole())
-                .accountValue(user.getAccountValue() != null ? user.getAccountValue() : userEntity.getAccountValue())
                 .registration(user.getRegistration() != null ? user.getRegistration() : userEntity.getRegistration())
                 .teacherRegistration(user.getTeacherRegistration() != null ? 
                         user.getTeacherRegistration() : userEntity.getTeacherRegistration())

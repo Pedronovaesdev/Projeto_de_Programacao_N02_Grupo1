@@ -19,7 +19,6 @@ curl -X POST http://localhost:8080/user \
     "specialty": null,
     "birthDate": "1995-05-15",
     "role": "STUDENT",
-    "accountValue": 0.0,
     "registration": "2024001",
     "teacherRegistration": null
   }'
@@ -37,7 +36,6 @@ curl -X POST http://localhost:8080/user \
     "specialty": "Programação Java",
     "birthDate": "1985-08-20",
     "role": "INSTRUCTOR",
-    "accountValue": 5000.0,
     "registration": null,
     "teacherRegistration": "PROF2024001"
   }'
@@ -55,7 +53,6 @@ curl -X POST http://localhost:8080/user \
     "specialty": "Gestão de Sistemas",
     "birthDate": "1980-12-10",
     "role": "ADMIN",
-    "accountValue": 10000.0,
     "registration": null,
     "teacherRegistration": "ADM2024001"
   }'
@@ -88,7 +85,6 @@ curl -X PUT http://localhost:8080/user/1 \
     "specialty": "Desenvolvimento Web",
     "birthDate": "1995-05-15",
     "role": "STUDENT",
-    "accountValue": 100.0,
     "registration": "2024001",
     "teacherRegistration": null
   }'
@@ -148,7 +144,7 @@ curl -X DELETE http://localhost:8080/user/1 \
 - **Emails únicos**: Cada usuário deve ter um email único.
 - **Roles disponíveis**: STUDENT, INSTRUCTOR, ADMIN
 - **Campos obrigatórios**: name, email, password, phone, birthDate, registration (para estudantes), role
-- **Campos opcionais**: specialty, accountValue, teacherRegistration
+- **Campos opcionais**: specialty, teacherRegistration
 
 ## Exemplo de Resposta de Sucesso
 ```json
@@ -160,7 +156,6 @@ curl -X DELETE http://localhost:8080/user/1 \
   "birthDate": "1995-05-15",
   "registrionDate": "2024-01-15",
   "lastAccess": "2024-01-15T10:30:00",
-  "accountValue": 0.0,
   "registration": "2024001",
   "specialty": null,
   "teacherRegistration": null,

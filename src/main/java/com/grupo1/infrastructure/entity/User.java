@@ -43,8 +43,6 @@ public class User implements Serializable {
     @Column(name = "ultimoAcesso")
     private LocalDateTime lastAccess;
 
-    @Column(name = "ValorConta", nullable = false)
-    private Double accountValue;
 
     @Column(name = "nome", nullable = false)
     private String name;
