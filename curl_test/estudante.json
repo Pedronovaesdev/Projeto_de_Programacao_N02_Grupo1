@@ -1,0 +1,12 @@
+{
+  "name": "João Silva",
+  "email": "joao.silva@email.com",
+  "password": "senha123",
+  "phone": "11999887766",
+  "specialty": null,
+  "birthDate": "1995-05-15",
+  "role": "STUDENT",
+  "accountValue": 0.0,
+  "registration": "2024001",
+  "teacherRegistration": null
+}

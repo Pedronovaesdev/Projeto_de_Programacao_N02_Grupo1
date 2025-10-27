@@ -1,0 +1,12 @@
+{
+  "name": "Carlos Admin",
+  "email": "carlos.admin@email.com",
+  "password": "admin123",
+  "phone": "11777665544",
+  "specialty": "Gestão de Sistemas",
+  "birthDate": "1980-12-10",
+  "role": "ADMIN",
+  "accountValue": 10000.0,
+  "registration": null,
+  "teacherRegistration": "ADM2024001"
+}
