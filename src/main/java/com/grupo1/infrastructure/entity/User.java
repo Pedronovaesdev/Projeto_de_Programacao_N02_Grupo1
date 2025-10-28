@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -37,7 +38,7 @@ public class User implements Serializable {
 
     @CreationTimestamp
     @Column(name = "dataCriacao", nullable = false)
-    private LocalDate registrionDate;
+    private LocalDateTime registrationDate;
 
     @UpdateTimestamp
     @Column(name = "ultimoAcesso")
@@ -64,4 +65,10 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Inscricao> inscricoes;
+
+    @OneToMany(mappedBy = "instrutor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Curso> cursosLecionados;
 }
