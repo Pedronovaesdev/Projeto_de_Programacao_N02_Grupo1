@@ -17,7 +17,6 @@ public class UserRequestDTO {
     private String specialty;
     private LocalDate birthDate;
     private Role role;
-    private Double accountValue;
     private String registration;
     private String teacherRegistration;
 }

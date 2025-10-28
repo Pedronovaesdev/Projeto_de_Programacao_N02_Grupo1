@@ -26,7 +26,6 @@ public class UserController {
         newUser.setSpecialty(userDto.getSpecialty());
         newUser.setBirthDate(userDto.getBirthDate());
         newUser.setRole(userDto.getRole() != null ? userDto.getRole() : Role.STUDENT);
-        newUser.setAccountValue(userDto.getAccountValue() != null ? userDto.getAccountValue() : 0.0);
         newUser.setRegistration(userDto.getRegistration());
         newUser.setTeacherRegistration(userDto.getTeacherRegistration());
         
@@ -55,7 +54,6 @@ public class UserController {
         updateUser.setSpecialty(userDto.getSpecialty());
         updateUser.setBirthDate(userDto.getBirthDate());
         updateUser.setRole(userDto.getRole());
-        updateUser.setAccountValue(userDto.getAccountValue());
         updateUser.setRegistration(userDto.getRegistration());
         updateUser.setTeacherRegistration(userDto.getTeacherRegistration());
         

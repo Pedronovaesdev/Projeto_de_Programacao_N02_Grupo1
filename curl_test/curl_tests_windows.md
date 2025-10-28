@@ -123,7 +123,6 @@ Crie um arquivo `admin.json`:
   "specialty": "Gestão de Sistemas",
   "birthDate": "1980-12-10",
   "role": "ADMIN",
-  "accountValue": 10000.0,
   "registration": null,
   "teacherRegistration": "ADM2024001"
 }
@@ -146,7 +145,6 @@ $body = @{
     specialty = $null
     birthDate = "1995-05-15"
     role = "STUDENT"
-    accountValue = 0.0
     registration = "2024001"
     teacherRegistration = $null
 } | ConvertTo-Json
@@ -174,5 +172,5 @@ Invoke-RestMethod -Uri "http://localhost:8080/user?email=joao.silva@email.com" -
 ## Comando Corrigido para seu teste:
 
 ```powershell
-curl -X POST http://localhost:8080/user -H "Content-Type: application/json" -d "{\"name\": \"João Silva\", \"email\": \"joao.silva@email.com\", \"password\": \"senha123\", \"phone\": \"11999887766\", \"specialty\": null, \"birthDate\": \"1995-05-15\", \"role\": \"STUDENT\", \"accountValue\": 0.0, \"registration\": \"2024001\", \"teacherRegistration\": null}"
+curl -X POST http://localhost:8080/user -H "Content-Type: application/json" -d "{\"name\": \"João Silva\", \"email\": \"joao.silva@email.com\", \"password\": \"senha123\", \"phone\": \"11999887766\", \"specialty\": null, \"birthDate\": \"1995-05-15\", \"role\": \"STUDENT\", \"registration\": \"2024001\", \"teacherRegistration\": null}"
 ```
