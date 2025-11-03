@@ -94,12 +94,22 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
 
+    public User findByRole(Role role) {
+        return userRepository.findByRole(role)
+                .orElseThrow(() -> new RuntimeException("User not found with role: " + role));
+    }
+
     public List<User> findByAll() {
         return userRepository.findAll();
     }
 
     public void deleteByEmail(String email) {
         User user = findByUserEmail(email);
+        userRepository.delete(user);
+    }
+
+    public void deleteByRole(Role role) {
+        User user = findByRole(role);
         userRepository.delete(user);
     }
 
