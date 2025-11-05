@@ -4,6 +4,7 @@ import com.grupo1.business.UserService;
 import com.grupo1.dto.UserRequestDTO;
 import com.grupo1.infrastructure.entity.Role;
 import com.grupo1.infrastructure.entity.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +20,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public ResponseEntity<Void> saveUser(@RequestBody UserRequestDTO userDto) {
+    public ResponseEntity<Void> saveUser(@RequestBody @Valid UserRequestDTO userDto) {
         User newUser = new User();
         newUser.setName(userDto.getName());
         newUser.setEmail(userDto.getEmail());
@@ -49,7 +50,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateUser(@PathVariable Integer id,
-                                           @RequestBody UserRequestDTO userDto) {
+                                           @RequestBody @Valid UserRequestDTO userDto) {
         User updateUser = new User();
         updateUser.setName(userDto.getName());
         updateUser.setEmail(userDto.getEmail());
