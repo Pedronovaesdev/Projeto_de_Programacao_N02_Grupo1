@@ -6,6 +6,7 @@ import com.grupo1.infrastructure.entity.Role;
 import com.grupo1.infrastructure.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,20 +16,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
     public ResponseEntity<Void> saveUser(@RequestBody UserRequestDTO userDto) {
         User newUser = new User();
         newUser.setName(userDto.getName());
         newUser.setEmail(userDto.getEmail());
-        newUser.setPassword(userDto.getPassword());
+        newUser.setCpf(userDto.getCpf());
+        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         newUser.setPhone(userDto.getPhone());
         newUser.setSpecialty(userDto.getSpecialty());
         newUser.setBirthDate(userDto.getBirthDate());
         newUser.setRole(userDto.getRole() != null ? userDto.getRole() : Role.STUDENT);
         newUser.setRegistration(userDto.getRegistration());
         newUser.setTeacherRegistration(userDto.getTeacherRegistration());
-        
+
+
         userService.saveUser(newUser);
         return ResponseEntity.ok().build();
     }
