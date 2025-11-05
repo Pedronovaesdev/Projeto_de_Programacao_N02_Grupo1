@@ -1,53 +1,70 @@
 package com.grupo1.config;
 
+import com.grupo1.business.JpaUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecuriyConfig {
 
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JpaUserDetailsService jpaUserDetailsService;
+
+    // Bean do PasswordEncoder (você já tinha)
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Bean do AuthenticationManager (necessário para o AuthenticationController)
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails student = User.withUsername("student")
-                .password(passwordEncoder.encode("123456"))
-                .roles("STUDENT")
-                .build();
-
-        UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder.encode("123456"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(student, admin);
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
+    // Bean principal da cadeia de filtros de segurança
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .oauth2ResourceServer(oauth2  -> oauth2.jwt(Customizer.withDefaults()))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                // 1. Desabilita o CSRF (desnecessário para APIs stateless)
+                .csrf(csrf -> csrf.disable())
+
+                // 2. Define as regras de autorização
+                .authorizeHttpRequests(auth -> auth
+                        // Permite acesso público ao endpoint de login
+                        .requestMatchers("/auth/login").permitAll()
+
+                        // Permite acesso público ao POST /user (para registrar novos usuários)
+                        .requestMatchers(HttpMethod.POST, "/user").permitAll()
+
+                        // Exige autenticação para qualquer outra requisição
+                        .anyRequest().authenticated()
+                )
+
+                // 3. Define a política de sessão como STATELESS (sem estado)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                // 4. Informa ao Spring qual UserDetailsService usar
+                .userDetailsService(jpaUserDetailsService)
+
+                // 5. Adiciona o seu filtro JWT antes do filtro padrão do Spring
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 }
