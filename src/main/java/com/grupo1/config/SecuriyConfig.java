@@ -1,6 +1,6 @@
 package com.grupo1.config;
 
-import com.grupo1.business.JpaUserDetailsService;
+import com.grupo1.business.JpaUserDetailsService; // Assumindo que você tem essa classe
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,10 +44,10 @@ public class SecuriyConfig {
                 // 1. Desabilita o CSRF (desnecessário para APIs stateless)
                 .csrf(csrf -> csrf.disable())
 
-                // 2. Define as regras de autorização
-                .authorizeHttpRequests(auth -> auth
-                        // Permite acesso público ao endpoint de login
-                        .requestMatchers("/auth/login").permitAll()
+            // 2. Define as regras de autorização GLOBAIS
+            .authorizeHttpRequests(auth -> auth
+                // Permite acesso público a endpoints de autenticação e documentação
+                .requestMatchers("/auth/login", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
 
                         // Permite acesso público ao POST /user (para registrar novos usuários)
                         .requestMatchers(HttpMethod.POST, "/user").permitAll()
