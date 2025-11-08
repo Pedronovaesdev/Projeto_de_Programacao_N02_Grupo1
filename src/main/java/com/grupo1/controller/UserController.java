@@ -7,7 +7,7 @@ import com.grupo1.infrastructure.entity.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
     public ResponseEntity<Void> saveUser(@RequestBody @Valid UserRequestDTO userDto) {
@@ -25,7 +24,7 @@ public class UserController {
         newUser.setName(userDto.getName());
         newUser.setEmail(userDto.getEmail());
         newUser.setCpf(userDto.getCpf());
-        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        newUser.setPassword(userDto.getPassword()); 
         newUser.setPhone(userDto.getPhone());
         newUser.setSpecialty(userDto.getSpecialty());
         newUser.setBirthDate(userDto.getBirthDate());
@@ -33,22 +32,24 @@ public class UserController {
         newUser.setRegistration(userDto.getRegistration());
         newUser.setTeacherRegistration(userDto.getTeacherRegistration());
 
-
         userService.saveUser(newUser);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> findByEmail(@RequestParam String email) {
         return ResponseEntity.ok(userService.findByUserEmail(email));
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<User>> findAll() {
         return ResponseEntity.ok(userService.findByAll());
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'INSTRUCTOR')")
     public ResponseEntity<Void> updateUser(@PathVariable Integer id,
                                            @RequestBody @Valid UserRequestDTO userDto) {
         User updateUser = new User();
@@ -61,24 +62,27 @@ public class UserController {
         updateUser.setRole(userDto.getRole());
         updateUser.setRegistration(userDto.getRegistration());
         updateUser.setTeacherRegistration(userDto.getTeacherRegistration());
-        
+
         userService.updateUserById(id, updateUser);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUserByEmail(@RequestParam String email) {
         userService.deleteByEmail(email);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUserById(@PathVariable Integer id) {
         userService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}/role")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateUserRole(@PathVariable Integer id, @RequestParam Role role) {
         User user = new User();
         user.setRole(role);

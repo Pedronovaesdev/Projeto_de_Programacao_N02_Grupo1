@@ -3,10 +3,9 @@ package com.grupo1.business;
 import com.grupo1.infrastructure.entity.Role;
 import com.grupo1.infrastructure.entity.User;
 import com.grupo1.infrastructure.repository.UserRepository;
-import com.grupo1.business.AdminInstructorStrategy;
-
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final StudentValidationStrategy studentValidationStrategy;
     private final AdminInstructorStrategy adminInstructorStrategy;
+    private final PasswordEncoder passwordEncoder; // Injeção de dependência
 
     private Map<Role, UserValidationStrategy> validationStrategies;
 
@@ -33,7 +33,6 @@ public class UserService {
 
     public void saveUser(User user) {
         Optional<User> existingEmail = userRepository.findByEmail(user.getEmail());
-
         if (existingEmail.isPresent()) {
             if (!existingEmail.get().getId().equals(user.getId())) {
                 throw new RuntimeException("Erro: email already in use by another user.");
@@ -49,13 +48,14 @@ public class UserService {
 
         validateUserByRole(user);
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
     public void updateUserById(Integer id, User user) {
         User userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
-        
+
         if (user.getEmail() != null && !user.getEmail().equals(userEntity.getEmail())) {
             Optional<User> emailExists = userRepository.findByEmail(user.getEmail());
             if (emailExists.isPresent()) {
@@ -69,23 +69,29 @@ public class UserService {
                 throw new RuntimeException("CPF already in use by another user");
             }
         }
+        
+        String newPassword = user.getPassword();
+        if (newPassword != null && !newPassword.isBlank()) {
+            newPassword = passwordEncoder.encode(newPassword);
+        } else {
+            newPassword = userEntity.getPassword(); // Mantém a senha antiga
+        }
 
         User userUpdate = User.builder()
                 .id(userEntity.getId())
                 .email(user.getEmail() != null ? user.getEmail() : userEntity.getEmail())
                 .name(user.getName() != null ? user.getName() : userEntity.getName())
                 .phone(user.getPhone() != null ? user.getPhone() : userEntity.getPhone())
-                .password(user.getPassword() != null ? user.getPassword() : userEntity.getPassword())
+                .password(newPassword)
                 .specialty(user.getSpecialty() != null ? user.getSpecialty() : userEntity.getSpecialty())
                 .birthDate(user.getBirthDate() != null ? user.getBirthDate() : userEntity.getBirthDate())
                 .role(user.getRole() != null ? user.getRole() : userEntity.getRole())
                 .registration(user.getRegistration() != null ? user.getRegistration() : userEntity.getRegistration())
-                .teacherRegistration(user.getTeacherRegistration() != null ? 
+                .teacherRegistration(user.getTeacherRegistration() != null ?
                         user.getTeacherRegistration() : userEntity.getTeacherRegistration())
                 .build();
-        
+
         validateUserByRole(userUpdate);
-        
         userRepository.saveAndFlush(userUpdate);
     }
 
@@ -124,11 +130,9 @@ public class UserService {
             throw new IllegalArgumentException("Usuário deve ter um papel definido");
         }
         UserValidationStrategy strategy = validationStrategies.get(user.getRole());
-
         if(strategy == null){
             throw new IllegalArgumentException("Papel não suportado: " + user.getRole());
         }
-
         strategy.validate(user);
     }
 }

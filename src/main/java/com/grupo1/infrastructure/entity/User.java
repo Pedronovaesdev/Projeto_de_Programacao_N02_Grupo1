@@ -4,10 +4,15 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -17,18 +22,18 @@ import java.util.Set;
 @Builder
 @Table(name = "tb_user")
 @Entity
-public class User implements Serializable {
+public class User implements Serializable, UserDetails { // Implementa UserDetails
     private static final long serialVersionUID = 1L;
 
-    @Id     
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @Column(name = "senha", nullable = false)
-    private String password ;
+    private String password;
 
     @Column(name = "telefone", nullable = false)
     private String phone;
@@ -43,7 +48,6 @@ public class User implements Serializable {
     @UpdateTimestamp
     @Column(name = "ultimoAcesso")
     private LocalDateTime lastAccess;
-
 
     @Column(name = "nome", nullable = false)
     private String name;
@@ -69,4 +73,34 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "instrutor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Curso> cursosLecionados;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
