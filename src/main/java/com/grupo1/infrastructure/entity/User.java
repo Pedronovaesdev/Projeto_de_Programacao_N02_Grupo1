@@ -74,6 +74,12 @@ public class User implements Serializable, UserDetails { // Implementa UserDetai
     @OneToMany(mappedBy = "instrutor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Curso> cursosLecionados;
 
+    @Column(name = "failed_attempt")
+    private int failedAttempt;
+
+    @Column(name = "lock_time")
+    private LocalDateTime lockTime;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
