@@ -18,7 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final StudentValidationStrategy studentValidationStrategy;
     private final AdminInstructorStrategy adminInstructorStrategy;
-    private final PasswordEncoder passwordEncoder; // Injeção de dependência
+    private final PasswordEncoder passwordEncoder;
 
     private Map<Role, UserValidationStrategy> validationStrategies;
 
