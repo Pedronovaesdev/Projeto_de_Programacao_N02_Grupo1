@@ -100,9 +100,17 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
 
-    public User findByRole(Role role) {
-        return userRepository.findByRole(role)
-                .orElseThrow(() -> new RuntimeException("User not found with role: " + role));
+    public List<User> findByRole(Role role) {
+
+        if (role == null) {
+            throw new IllegalArgumentException("O tipo de usuário (Role) não pode ser nulo.");
+        }
+
+
+        List<User> user = userRepository.findByRole(role);
+
+
+        return user != null ? user : List.of();
     }
 
     public List<User> findByAll() {
@@ -115,8 +123,17 @@ public class UserService {
     }
 
     public void deleteByRole(Role role) {
-        User user = findByRole(role);
-        userRepository.delete(user);
+        if (role == null) {
+            throw new IllegalArgumentException("O tipo de usuário role não pode ser nulo.");
+        }
+
+        List<User> usuarios = userRepository.findByRole(role);
+
+        if (usuarios.isEmpty()) {
+            throw new RuntimeException("Nenhum usuário encontrado com o tipo: " + role);
+        }
+
+        userRepository.delete(usuarios.get(0));
     }
 
     public void deleteById(Integer id) {
