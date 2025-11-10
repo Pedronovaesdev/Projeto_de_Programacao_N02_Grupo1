@@ -64,9 +64,17 @@ public class User implements Serializable {
     @Column(name = "role", nullable = false)
     private Role role;
 
+    @Column(name="failedAttempt")
+    private int failedAttempt;
+
+    @Column(name="lockTime")
+    private LocalDateTime lockTime;
+
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Inscricao> inscricoes;
 
     @OneToMany(mappedBy = "instrutor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Curso> cursosLecionados;
+
+
 }
