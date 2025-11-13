@@ -1,8 +1,11 @@
 package com.grupo1.controller;
 
+import com.grupo1.business.UserService;
 import com.grupo1.config.JwtTokenService;
 import com.grupo1.dto.LoginRequestDTO;
 import com.grupo1.dto.LoginResponseDTO;
+import com.grupo1.dto.PasswordResetCompletionDTO;
+import com.grupo1.dto.PasswordResetRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,21 +23,38 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenService jwtTokenService;
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
-        // 1. Autentica o usuário usando o email e a senha
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        // 2. Se a autenticação for bem-sucedida, obtém os UserDetails
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        // 3. Gera o token JWT
         String token = jwtTokenService.generateToken(userDetails);
 
-        // 4. Retorna o token para o cliente
         return ResponseEntity.ok(new LoginResponseDTO(token));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody PasswordResetRequestDTO request){
+        try{
+            userService.initiatePasswordReset(request.getEmail());
+            return ResponseEntity.ok("Email de redefinicação enviado");
+        }catch (Exception e){
+            return ResponseEntity.ok("Se o email estiver cadastrado um link será enviado");
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody PasswordResetCompletionDTO request){
+        try{
+            userService.completePasswordReset(request.getToken(), request.getNewPassword());
+            return ResponseEntity.ok("Senha redefinida com sucesso");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
