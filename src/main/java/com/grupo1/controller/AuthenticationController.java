@@ -43,7 +43,7 @@ public class AuthenticationController {
     public ResponseEntity<String> forgotPassword(@RequestBody PasswordResetRequestDTO request) {
         try {
             userService.initiatePasswordReset(request.getEmail());
-            return ResponseEntity.ok("E-mail de redefinição de senha enviado.");
+            return ResponseEntity.ok("Se o e-mail estiver cadastrado, um link será enviado.");
         } catch (Exception e) {
             return ResponseEntity.ok("Se o e-mail estiver cadastrado, um link será enviado.");
         }
