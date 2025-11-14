@@ -11,7 +11,11 @@ public class AuthenticationSuccessListener
         implements ApplicationListener<AuthenticationSuccessEvent> {
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public AuthenticationSuccessListener(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public void onApplicationEvent(AuthenticationSuccessEvent event) {

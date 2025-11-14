@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class AuthenticationFailureListener
         implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {
