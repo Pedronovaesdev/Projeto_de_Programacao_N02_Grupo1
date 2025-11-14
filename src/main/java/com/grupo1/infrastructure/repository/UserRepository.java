@@ -14,6 +14,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByEmail(String email);
     Optional<User> findByCpf(String cpf);
+    Optional<User> findByPasswordResetToken(String token);
     List<User> findByRole(Role role);
     @Transactional
     void deleteByEmail(String email);
