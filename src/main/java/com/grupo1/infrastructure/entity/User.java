@@ -22,7 +22,7 @@ import java.util.Set;
 @Builder
 @Table(name = "tb_user")
 @Entity
-public class User implements Serializable, UserDetails { // Implementa UserDetails
+public class User implements Serializable, UserDetails { 
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -80,6 +80,12 @@ public class User implements Serializable, UserDetails { // Implementa UserDetai
     @Column(name = "lock_time")
     private LocalDateTime lockTime;
 
+    @Column(name = "password_reset_token")
+    private String passwordResetToken;
+
+    @Column(name = "token_expiry_time")
+    private LocalDateTime tokenExpiryTime;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
@@ -104,6 +110,7 @@ public class User implements Serializable, UserDetails { // Implementa UserDetai
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
 
     @Override
     public boolean isEnabled() {

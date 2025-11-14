@@ -1,6 +1,6 @@
 package com.grupo1.config;
 
-import com.grupo1.business.JpaUserDetailsService;
+import com.grupo1.business.JpaUserDetailsService; 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,21 +39,19 @@ public class SecuriyConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
 
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login").permitAll()
-
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/login"
+                            ,"/auth/forgot-password",
+                            "/auth/reset-password", 
+                            "/v3/api-docs/**", 
+                            "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user").permitAll()
-
                         .anyRequest().authenticated()
                 )
-
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
                 .userDetailsService(jpaUserDetailsService)
-
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
