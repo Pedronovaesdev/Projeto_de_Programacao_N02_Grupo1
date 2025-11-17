@@ -26,7 +26,7 @@ public class UserService {
     private Map<Role, UserValidationStrategy> validationStrategies;
 
     @PostConstruct
-    private void iniciarStrategies(){
+    public void iniciarStrategies(){
         validationStrategies = Map.of(
             Role.STUDENT, studentValidationStrategy,
             Role.INSTRUCTOR, adminInstructorStrategy,
