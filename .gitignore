@@ -39,3 +39,4 @@ out/
 # Secrets - NUNCA ENVIE ARQUIVOS COM SENHAS!
 application.properties
 application.yml
+.env
