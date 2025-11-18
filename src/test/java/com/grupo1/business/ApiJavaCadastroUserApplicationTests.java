@@ -132,7 +132,7 @@ class UserServiceTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 userService.saveUser(invalidStudent)
         );
-        assertEquals("Estudante não tem um número de registro", exception.getMessage());
+        assertEquals("Estudante não tem um número de registro!", exception.getMessage());
         verify(userRepository, never()).save(any(User.class));
     }
 }
