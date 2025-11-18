@@ -73,5 +73,21 @@ class UserControllerTest {
         verify(userService, times(1)).saveUser(any(User.class));
     }
 
+    @Test //Buscar por Email
+    @DisplayName("GET /user - ADMIN - Deve retornar o usuário e 200 OK")
+    void findByEmail_Admin_ShouldReturnUserAnd200Ok() throws Exception {
+        // Arrange
+        when(userService.findByUserEmail(eq("john.doe@test.com"))).thenReturn(mockUser);
 
+        // Act & Assert (Simula ADMIN)
+        mockMvc.perform(get("/user")
+                        .param("email", "john.doe@test.com")
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin@test.com")
+                                .authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email", is("john.doe@test.com")));
+
+        verify(userService, times(1)).findByUserEmail(eq("john.doe@test.com"));
+    }
 }
