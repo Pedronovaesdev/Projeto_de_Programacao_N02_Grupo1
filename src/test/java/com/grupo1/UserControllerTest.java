@@ -286,4 +286,20 @@ class UserControllerTest {
 
         verify(userService, times(1)).findByUserEmail(eq(nonExistentEmail));
     }
+
+    @Test // 500 Internal Server Error
+    @DisplayName("GET /user/all - ADMIN - Deve retornar 500 Internal Server Error em caso de falha no serviço")
+    void findAll_Admin_ShouldReturn500InternalServerError_OnServiceFailure() throws Exception {
+        // Arrange
+        when(userService.findByAll()).thenThrow(new RuntimeException("Database connection error."));
+
+        // Act & Assert (Simula ADMIN)
+        mockMvc.perform(get("/user/all")
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin@test.com")
+                                .authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError()); // Assumindo que exceções não mapeadas retornam 500
+
+        verify(userService, times(1)).findByAll();
+    }
 }
