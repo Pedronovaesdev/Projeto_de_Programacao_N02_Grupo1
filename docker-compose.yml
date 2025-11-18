@@ -20,11 +20,22 @@ services:
       - "8080:8080"
     depends_on:
       - db
+    env_file:
+      - .env
+
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/user_db
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_MAIL_HOST=smtp.gmail.com
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=
+      - SPRING_MAIL_PASSWORD=
 
 volumes:
   postgres_data:
