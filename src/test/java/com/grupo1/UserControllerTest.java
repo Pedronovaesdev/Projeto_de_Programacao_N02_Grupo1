@@ -19,6 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcConfigurer;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -34,6 +36,8 @@ class UserControllerTest {
 
     private MockMvc mockMvc;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Mock
     private UserService userService;
 
@@ -45,6 +49,11 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(userController)
+                .apply((MockMvcConfigurer) SecurityMockMvcRequestPostProcessors.testSecurityContext())
+                .build();
+
         validUserRequest = new UserRequestDTO(
                 "John Doe", "john.doe@test.com", "12345678900",
                 "password123", "987654321", "Programming",
@@ -64,7 +73,6 @@ class UserControllerTest {
         doNothing().when(userService).saveUser(any(User.class));
 
         // Act & Assert
-        ObjectMapper objectMapper = null; //inicializar a variável
         mockMvc.perform(post("/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validUserRequest)))
@@ -131,7 +139,6 @@ class UserControllerTest {
         doNothing().when(userService).updateUserById(eq(userId), any(User.class));
 
         // Act & Assert (Simula ADMIN)
-        ObjectMapper objectMapper = null;
         mockMvc.perform(put("/user/{id}", userId)
                         .with(SecurityMockMvcRequestPostProcessors.user("admin@test.com")
                                 .authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
@@ -150,7 +157,6 @@ class UserControllerTest {
         doNothing().when(userService).updateUserById(eq(userId), any(User.class));
 
         // Act & Assert (Simula INSTRUCTOR)
-        ObjectMapper objectMapper = null;
         mockMvc.perform(put("/user/{id}", userId)
                         .with(SecurityMockMvcRequestPostProcessors.user("instructor@test.com")
                                 .authorities(new SimpleGrantedAuthority("ROLE_INSTRUCTOR")))
@@ -168,7 +174,6 @@ class UserControllerTest {
         Integer userId = 1;
 
         // Act & Assert (Simula STUDENT)
-        ObjectMapper objectMapper = null;
         mockMvc.perform(put("/user/{id}", userId)
                         .with(SecurityMockMvcRequestPostProcessors.user("student@test.com")
                                 .authorities(new SimpleGrantedAuthority("ROLE_STUDENT")))
