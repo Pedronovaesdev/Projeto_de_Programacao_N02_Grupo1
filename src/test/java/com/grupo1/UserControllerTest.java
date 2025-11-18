@@ -178,4 +178,21 @@ class UserControllerTest {
 
         verify(userService, never()).updateUserById(eq(userId), any(User.class));
     }
+
+    @Test //Deletar por Email
+    @DisplayName("DELETE /user - ADMIN - Deve deletar por email e retornar 200 OK (Caminho Feliz)")
+    void deleteUserByEmail_Admin_ShouldReturn200Ok_OnSuccess() throws Exception {
+        // Arrange
+        String email = "john.doe@test.com";
+        doNothing().when(userService).deleteByEmail(eq(email));
+
+        // Act & Assert (Simula ADMIN)
+        mockMvc.perform(delete("/user")
+                        .param("email", email)
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin@test.com")
+                                .authorities(new SimpleGrantedAuthority("ROLE_ADMIN"))))
+                .andExpect(status().isOk());
+
+        verify(userService, times(1)).deleteByEmail(eq(email));
+    }
 }
