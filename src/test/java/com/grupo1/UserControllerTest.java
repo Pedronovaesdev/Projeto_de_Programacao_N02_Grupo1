@@ -90,4 +90,18 @@ class UserControllerTest {
 
         verify(userService, times(1)).findByUserEmail(eq("john.doe@test.com"));
     }
+
+    @Test
+    @DisplayName("GET /user - Não ADMIN - Deve retornar 403 Forbidden (Cenário de Erro/Segurança)")
+    void findByEmail_NonAdmin_ShouldReturn403Forbidden() throws Exception {
+        // Act & Assert (Simula STUDENT)
+        mockMvc.perform(get("/user")
+                        .param("email", "john.doe@test.com")
+                        .with(SecurityMockMvcRequestPostProcessors.user("student@test.com")
+                                .authorities(new SimpleGrantedAuthority("ROLE_STUDENT")))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+
+        verify(userService, never()).findByUserEmail(anyString());
+    }
 }
