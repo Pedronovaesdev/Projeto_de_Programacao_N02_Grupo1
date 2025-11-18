@@ -56,4 +56,22 @@ class UserControllerTest {
         mockUser.setName("John Doe");
         mockUser.setEmail("john.doe@test.com");
     }
+
+    @Test //Salvar usuário
+    @DisplayName("POST /user - Deve salvar o usuário e retornar 200 OK")
+    void saveUser_ShouldReturn200Ok_OnSuccess() throws Exception {
+        // Arrange
+        doNothing().when(userService).saveUser(any(User.class));
+
+        // Act & Assert
+        ObjectMapper objectMapper = null; //inicializar a variável
+        mockMvc.perform(post("/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(validUserRequest)))
+                .andExpect(status().isOk());
+
+        verify(userService, times(1)).saveUser(any(User.class));
+    }
+
+
 }
