@@ -12,7 +12,7 @@ This registration module provides user management functionality including regist
 
 - [x] Creating new users (students, instructors, administrators)
 - [x] User data validation (email, CPF, phone number, and other fields)
-- [ ] User authentication and login
+- [x] User authentication and login
 - [x] Reading users (by ID and retrieve all users)
 - [x] Updating existing user data
 - [x] Deleting users
