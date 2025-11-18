@@ -248,4 +248,22 @@ class UserControllerTest {
 
         verify(userService, times(1)).updateUserById(eq(userId), any(User.class));
     }
+
+    @Test // Validacao 400 BAD REQUEST
+    @DisplayName("POST /user - Deve retornar 400 Bad Request se o email for inválido")
+    void saveUser_ShouldReturn400BadRequest_OnInvalidEmail() throws Exception {
+        UserRequestDTO invalidRequest = new UserRequestDTO(
+                "Jane Doe", "email-invalido", "12345678900",
+                "pwd", "987654321", "Math",
+                LocalDate.of(1995, 1, 1), Role.STUDENT, "REG12346", null
+        );
+
+        // Act & Assert (O erro 400 ocorre na camada MVC, antes do Service)
+        mockMvc.perform(post("/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidRequest)))
+                .andExpect(status().isBadRequest());
+
+        verify(userService, never()).saveUser(any(User.class));
+    }
 }
