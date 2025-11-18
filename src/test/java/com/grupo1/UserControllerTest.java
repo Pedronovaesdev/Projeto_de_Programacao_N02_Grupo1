@@ -104,4 +104,22 @@ class UserControllerTest {
 
         verify(userService, never()).findByUserEmail(anyString());
     }
+
+    @Test //Buscar Todos
+    @DisplayName("GET /user/all - ADMIN - Deve retornar a lista de usuários e 200 OK")
+    void findAll_Admin_ShouldReturnUserListAnd200Ok() throws Exception {
+        // Arrange
+        List<User> userList = Arrays.asList(mockUser, new User());
+        when(userService.findByAll()).thenReturn(userList);
+
+        // Act & Assert (Simula ADMIN)
+        mockMvc.perform(get("/user/all")
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin@test.com")
+                                .authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(2)));
+
+        verify(userService, times(1)).findByAll();
+    }
 }
