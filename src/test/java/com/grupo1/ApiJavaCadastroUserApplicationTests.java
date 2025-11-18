@@ -61,15 +61,13 @@ class UserServiceTest {
     @Test
     @DisplayName("Deve salvar um novo estudante com sucesso")
     void saveUser_ShouldSaveNewStudentSuccessfully() {
-        // Arrange
+
         when(userRepository.findByEmail(student.getEmail())).thenReturn(Optional.empty());
         when(userRepository.findByCpf(student.getCpf())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(student.getPassword())).thenReturn("encodedPassword");
 
-        // Act
         userService.saveUser(student);
 
-        // Assert
         verify(passwordEncoder).encode("senha123");
         verify(studentValidationStrategy).validate(student);
         verify(userRepository).save(argThat(user ->
@@ -81,10 +79,10 @@ class UserServiceTest {
     @Test
     @DisplayName("Deve lançar RuntimeException ao tentar salvar com email duplicado")
     void saveUser_ShouldThrowExceptionWhenEmailDuplicated() {
-        // Arrange
+
         when(userRepository.findByEmail(student.getEmail())).thenReturn(Optional.of(student));
 
-        // Act & Assert
+
         RuntimeException exception = assertThrows(RuntimeException.class, () ->
                 userService.saveUser(student)
         );
@@ -95,11 +93,11 @@ class UserServiceTest {
     @Test
     @DisplayName("Deve lançar RuntimeException ao tentar salvar com CPF duplicado")
     void saveUser_ShouldThrowExceptionWhenCpfDuplicated() {
-        // Arrange
+
         when(userRepository.findByEmail(student.getEmail())).thenReturn(Optional.empty());
         when(userRepository.findByCpf(student.getCpf())).thenReturn(Optional.of(student));
 
-        // Act & Assert
+
         RuntimeException exception = assertThrows(RuntimeException.class, () ->
                 userService.saveUser(student)
         );
@@ -110,7 +108,7 @@ class UserServiceTest {
     @Test
     @DisplayName("Deve lançar IllegalArgumentException para estudante sem número de registro")
     void saveUser_ShouldThrowExceptionWhenStudentIsMissingRegistration() {
-        // Arrange
+
         User invalidStudent = User.builder()
                 .name("Aluno Invalido")
                 .email("invalido@teste.com")
@@ -119,10 +117,10 @@ class UserServiceTest {
                 .phone("11999999999")
                 .birthDate(LocalDate.of(2000, 1, 1))
                 .role(Role.STUDENT)
-                .registration(null) // Campo ausente
+                .registration(null)
                 .build();
 
-        // Simula o comportamento da StudentValidationStrategy
+
         doThrow(new IllegalArgumentException("Estudante não tem um número de registro"))
                 .when(studentValidationStrategy).validate(invalidStudent);
 
@@ -130,7 +128,7 @@ class UserServiceTest {
         when(userRepository.findByCpf(anyString())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
 
-        // Act & Assert
+
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 userService.saveUser(invalidStudent)
         );
