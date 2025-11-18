@@ -195,4 +195,17 @@ class UserControllerTest {
 
         verify(userService, times(1)).deleteByEmail(eq(email));
     }
+
+    @Test
+    @DisplayName("DELETE /user - Não ADMIN - Deve retornar 403 Forbidden (Cenário de Erro/Segurança)")
+    void deleteUserByEmail_NonAdmin_ShouldReturn403Forbidden() throws Exception {
+        // Act & Assert (Simula STUDENT)
+        mockMvc.perform(delete("/user")
+                        .param("email", "john.doe@test.com")
+                        .with(SecurityMockMvcRequestPostProcessors.user("student@test.com")
+                                .authorities(new SimpleGrantedAuthority("ROLE_STUDENT"))))
+                .andExpect(status().isForbidden());
+
+        verify(userService, never()).deleteByEmail(anyString());
+    }
 }
