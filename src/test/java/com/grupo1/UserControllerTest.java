@@ -224,4 +224,23 @@ class UserControllerTest {
 
         verify(userService, times(1)).deleteById(eq(userId));
     }
+
+    @Test //Atualizar Role
+    @DisplayName("PATCH /user/{id}/role - ADMIN - Deve atualizar a role e retornar 200 OK (Caminho Feliz)")
+    void updateUserRole_Admin_ShouldReturn200Ok_OnSuccess() throws Exception {
+        // Arrange
+        Integer userId = 1;
+        Role newRole = Role.INSTRUCTOR;
+
+        doNothing().when(userService).updateUserById(eq(userId), any(User.class));
+
+        // Act & Assert (Simula ADMIN)
+        mockMvc.perform(patch("/user/{id}/role", userId)
+                        .param("role", newRole.name())
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin@test.com")
+                                .authorities(new SimpleGrantedAuthority("ROLE_ADMIN"))))
+                .andExpect(status().isOk());
+
+        verify(userService, times(1)).updateUserById(eq(userId), any(User.class));
+    }
 }
