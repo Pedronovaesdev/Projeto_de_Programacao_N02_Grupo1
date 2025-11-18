@@ -21,9 +21,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcConfigurer;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.empty;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -299,6 +302,23 @@ class UserControllerTest {
                                 .authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError()); // Assumindo que exceções não mapeadas retornam 500
+
+        verify(userService, times(1)).findByAll();
+    }
+
+    @Test // 200 OK - lista vazia
+    @DisplayName("GET /user/all - ADMIN - Deve retornar lista vazia e 200 OK quando não há usuários")
+    void findAll_Admin_ShouldReturnEmptyListAnd200Ok() throws Exception {
+        // Arrange
+        when(userService.findByAll()).thenReturn(Collections.emptyList());
+
+        // Act & Assert (Simula ADMIN)
+        mockMvc.perform(get("/user/all")
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin@test.com")
+                                .authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", empty())); // Verifica se o corpo é um array vazio
 
         verify(userService, times(1)).findByAll();
     }
