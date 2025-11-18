@@ -266,4 +266,24 @@ class UserControllerTest {
 
         verify(userService, never()).saveUser(any(User.class));
     }
+
+    @Test // Validacao 404 NOT FOUND
+    @DisplayName("GET /user - ADMIN - Deve retornar 404 Not Found quando o usuário não existe")
+    void findByEmail_Admin_ShouldReturn404NotFound() throws Exception {
+        // Arrange
+        String nonExistentEmail = "naoexiste@test.com";
+        // Simula o Service lançando a exceção de Recurso Não Encontrado
+        when(userService.findByUserEmail(eq(nonExistentEmail)))
+                .thenThrow(new ResourceNotFoundException("Usuário não encontrado."));
+
+        // Act & Assert
+        mockMvc.perform(get("/user")
+                        .param("email", nonExistentEmail)
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin@test.com")
+                                .authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound()); // Assumindo que ResourceNotFoundException mapeia para 404
+
+        verify(userService, times(1)).findByUserEmail(eq(nonExistentEmail));
+    }
 }
