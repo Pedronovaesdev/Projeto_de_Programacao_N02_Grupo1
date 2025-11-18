@@ -141,4 +141,23 @@ class UserControllerTest {
 
         verify(userService, times(1)).updateUserById(eq(userId), any(User.class));
     }
+
+    @Test
+    @DisplayName("PUT /user/{id} - INSTRUCTOR - Deve atualizar e retornar 200 OK (Caminho Feliz)")
+    void updateUser_Instructor_ShouldReturn200Ok_OnSuccess() throws Exception {
+        // Arrange
+        Integer userId = 1;
+        doNothing().when(userService).updateUserById(eq(userId), any(User.class));
+
+        // Act & Assert (Simula INSTRUCTOR)
+        ObjectMapper objectMapper = null;
+        mockMvc.perform(put("/user/{id}", userId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("instructor@test.com")
+                                .authorities(new SimpleGrantedAuthority("ROLE_INSTRUCTOR")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(validUserRequest)))
+                .andExpect(status().isOk());
+
+        verify(userService, times(1)).updateUserById(eq(userId), any(User.class));
+    }
 }
