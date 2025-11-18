@@ -160,4 +160,22 @@ class UserControllerTest {
 
         verify(userService, times(1)).updateUserById(eq(userId), any(User.class));
     }
+
+    @Test
+    @DisplayName("PUT /user/{id} - STUDENT - Deve retornar 403 Forbidden (Cenário de Erro/Segurança)")
+    void updateUser_Student_ShouldReturn403Forbidden() throws Exception {
+        // Arrange
+        Integer userId = 1;
+
+        // Act & Assert (Simula STUDENT)
+        ObjectMapper objectMapper = null;
+        mockMvc.perform(put("/user/{id}", userId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("student@test.com")
+                                .authorities(new SimpleGrantedAuthority("ROLE_STUDENT")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(validUserRequest)))
+                .andExpect(status().isForbidden());
+
+        verify(userService, never()).updateUserById(eq(userId), any(User.class));
+    }
 }
