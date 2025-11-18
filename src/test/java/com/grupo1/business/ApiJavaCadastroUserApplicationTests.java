@@ -1,4 +1,4 @@
-package com.grupo1;
+package com.grupo1.business;
 
 import com.grupo1.business.AdminInstructorStrategy;
 import com.grupo1.business.EmailService;

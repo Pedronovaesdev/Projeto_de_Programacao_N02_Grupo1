@@ -1,4 +1,4 @@
-package com.grupo1;
+package com.grupo1.infrastructure.repository;
 
 import com.grupo1.infrastructure.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
