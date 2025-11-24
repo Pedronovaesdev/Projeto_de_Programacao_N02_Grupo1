@@ -41,7 +41,4 @@ public class UserRequestDTO {
     
     private String registration;
     private String teacherRegistration;
-
-    public UserRequestDTO(String johnDoe, String mail, String number, String password123, String number1, String programming, LocalDate of, Role role, String reg12345, Object o) {
-    }
 }
